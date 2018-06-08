@@ -1,0 +1,75 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'bugly'
+
+bugly {
+    appId = '<4a3804c4fe>' // 注册时分配的App ID
+    appKey = '<6053605e-a907-4b82-9843-248efffadc42>' // 注册时分配的App Key
+    debug = false
+}
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.android.appcompat}"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //  butterknife 依赖注入
+    api 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //网络请求
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.google.code.gson:gson:2.2.4'
+    api 'com.squareup.retrofit2:converter-gson:2.4.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    //RxJava
+    api "io.reactivex.rxjava2:rxjava:2.1.14"
+    api 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    //数据库
+    api 'com.j256.ormlite:ormlite-android:5.1'
+
+    //崩溃信息收集以及更新   , 因为更新中集成了日志上报，所以注释掉单独的日志上报
+//    api 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+
+    api 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    api 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+
+
+    //轻巧弹出框
+    api 'com.tapadoo.android:alerter:2.0.6'
+
+
+}
