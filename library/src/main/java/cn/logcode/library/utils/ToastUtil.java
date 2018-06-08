@@ -2,7 +2,9 @@ package cn.logcode.library.utils;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -13,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 
 
@@ -29,7 +33,6 @@ public class ToastUtil {
     private WindowManager.LayoutParams params;
     private int mDuration;
     private boolean isCustom = false;
-
 
 
     private Handler handler = new Handler();
@@ -203,55 +206,19 @@ public class ToastUtil {
     /**
      * 调用Toast
      */
-    public Show makeText(CharSequence text, int duration) {
+    public ToastUtil makeText(CharSequence text, @Duration int duration) {
         if (!isCustom) {
             textTv.setText(text);
         }
-        return makeText(duration);
-    }
-
-    /**
-     * 调用自定义
-     *
-     * @param duration
-     * @return
-     */
-    public Show makeText(int duration) {
-
         mDuration = duration;
-        toast.setView(view);
-        return new Show();
+        return this;
     }
 
-
-    public class Show {
-        private Show() {
-        }
-
-        public void show() {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mDuration <= Toast.LENGTH_SHORT) {
-                        toast.setDuration(Toast.LENGTH_SHORT);
-                        toast.show();
-                    } else if (mDuration == Toast.LENGTH_LONG) {
-                        toast.setDuration(Toast.LENGTH_LONG);
-                        toast.show();
-                    } else {
-                        toast.setDuration(Toast.LENGTH_LONG);
-                        toast.show();
-                        mDuration -= 4000;
-                        handler.postDelayed(this, 3000 - 1);
-                    }
-
-                }
-            }, 0);
-        }
-
+    public void show() {
+        toast.setDuration(mDuration);
+        toast.show();
     }
-
-
+    
     /**
      * 生成View
      *
@@ -261,8 +228,15 @@ public class ToastUtil {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setGravity(Gravity.CENTER);
-        linearLayout.setBackgroundColor(Color.parseColor("#21201F"));
+//        linearLayout.setBackgroundColor(Color.parseColor("#21201F"));
 
+        GradientDrawable gradientDrawable = new GradientDrawable();
+
+        gradientDrawable.setColor(Color.parseColor("#a7333333"));
+
+        gradientDrawable.setCornerRadius(UIUtils.dp2px(8));
+
+        linearLayout.setBackground(gradientDrawable);
 
         textTv = new TextView(context);
         textTv.setTextColor(Color.WHITE);
@@ -314,6 +288,12 @@ public class ToastUtil {
             return field.get(object);
         }
         return null;
+    }
+
+
+    @IntDef({Toast.LENGTH_SHORT, Toast.LENGTH_LONG})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Duration {
     }
 
 }

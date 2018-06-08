@@ -20,7 +20,7 @@ import cn.logcode.library.Log.LogUtils;
  * @简书: http://www.jianshu.com/u/b252a19d88f3
  * @content:
  */
-public abstract class ApplicationLibrary extends Application {
+public class ApplicationLibrary extends Application {
     public static ApplicationLibrary INSTANCE;
 
     @Override
@@ -40,7 +40,9 @@ public abstract class ApplicationLibrary extends Application {
         }
 
     }
-    public abstract String getBaseUrl();
+    public String getBaseUrl(){
+        return "";
+    };
 
     public String buglyAppId(){
         return "";

@@ -28,6 +28,9 @@ public class BaseModel implements IModel {
     public void onAttach(IDelegate delegate) {
         mDelegate = delegate;
         mContext = (Context) delegate;
+        if(ApplicationLibrary.INSTANCE.getBaseUrl().equals("")){
+            throw new IllegalStateException("使用mvp模式，需要继承ApplicationLibrary重写getBaseUrl方法返回BaseUrl");
+        }
         mHttpManager = HttpManager.getInstance(ApplicationLibrary.INSTANCE.getBaseUrl());
     }
 

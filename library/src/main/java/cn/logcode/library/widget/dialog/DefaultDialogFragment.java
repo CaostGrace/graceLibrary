@@ -279,9 +279,12 @@ public class DefaultDialogFragment extends DialogFragment implements Idialog {
 
     @Override
     public void dismiss() {
-        if(getDailog().isShowing()){
-            super.dismiss();
-        }
+        try{
+            if(getDailog().isShowing()){
+                super.dismiss();
+            }
+        }catch (Exception e){}
+
     }
 
     public static class DialogParams implements Serializable{
