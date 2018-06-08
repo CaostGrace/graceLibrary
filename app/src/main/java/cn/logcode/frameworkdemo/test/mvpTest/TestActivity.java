@@ -32,6 +32,7 @@ import io.reactivex.disposables.Disposable;
 public class TestActivity extends BaseDelegate<TestView, TestModel> {
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
