@@ -23,6 +23,7 @@ import cn.logcode.library.mvp.BaseDelegate;
 import cn.logcode.library.utils.ToastUtil;
 import cn.logcode.library.utils.UIUtils;
 import cn.logcode.library.widget.dialog.DialogManager;
+import cn.logcode.library.widget.loading.LoadDialog;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -46,20 +47,11 @@ public class TestActivity extends BaseDelegate<TestView, TestModel> {
 
         TextView textView = mView.get(R.id.test02);
 
-        mView.get(R.id.test01).setOnClickListener((View v) -> {
-            mModel.mHttpManager.createApi(TestApi.class)
-                    .defaultTest("1cc454f2535844bd9b085ea71428f3f6", "成都天气")
-                    .compose(RxSchedulers.defaultCompose())
-                    .subscribe(new DefaultObserver<Bean>(mView) {
-                        @Override
-                        public void onHandleSuccess(Bean bean) {
-                            textView.setText(bean.toString());
-                            ToastUtil.init(TestActivity.this)
-                                    .makeText(bean.toString(), Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    });
 
+        mView.get(R.id.test01).setOnClickListener((View v) -> {
+            LoadDialog.create(TestActivity.this)
+                    .setTitleText("请稍后...")
+                    .show(2000);
         });
     }
 

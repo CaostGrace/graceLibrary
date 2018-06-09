@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.util.TypedValue;
@@ -11,13 +12,19 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
+
+import cn.logcode.library.R;
 
 
 /**
@@ -33,19 +40,29 @@ public class ToastUtil {
     private WindowManager.LayoutParams params;
     private int mDuration;
     private boolean isCustom = false;
+    private static GradientDrawable gradientDrawable;
 
-
-    private Handler handler = new Handler();
+//    private static View successView;
 
     private ToastUtil(Context context) {
         this.context = context;
         toast = new Toast(context);
         params = getWindowParams();
 
+        if(gradientDrawable == null){
+            gradientDrawable = new GradientDrawable();
+
+            gradientDrawable.setColor(Color.parseColor("#a7333333"));
+
+            gradientDrawable.setCornerRadius(UIUtils.dp2px(8));
+        }
+
+
         view = generateView();
         setGravity(Gravity.CENTER, 0, 0);
         if (params != null) {
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            params.windowAnimations = R.style.toastAnim;
         } else {
             throw new NullPointerException();
         }
@@ -214,11 +231,67 @@ public class ToastUtil {
         return this;
     }
 
+
+
+    public ToastUtil makeErrorToast(CharSequence text,@DrawableRes int resId,@Duration int duration){
+        view = View.inflate(context,R.layout.library_toast_error,null);
+        RelativeLayout root = view.findViewById(R.id.rl_root);
+        root.setBackground(gradientDrawable);
+
+        textTv = view.findViewById(R.id.chapterName);
+        textTv.setText(text);
+
+        ImageView icon = view.findViewById(R.id.iv_icon);
+        if(resId != 0){
+            icon.setImageResource(resId);
+        }
+        mDuration = duration;
+
+        return this;
+    }
+
+    public ToastUtil makeErrorToast(CharSequence text,@Duration int duration){
+        return makeErrorToast(text,0,duration);
+    }
+
+
+    /**
+     * 调用成功Toast
+     * @return
+     */
+    public ToastUtil makeSuccessToast(CharSequence text,@Duration int duration){
+        return makeSuccessToast(text,0,duration);
+    }
+
+    /**
+     * 调用成功Toast
+     * @return
+     */
+    public ToastUtil makeSuccessToast(CharSequence text,@DrawableRes int resId,@Duration int duration){
+        view = View.inflate(context,R.layout.library_toast_success,null);
+        RelativeLayout root = view.findViewById(R.id.rl_root);
+        root.setBackground(gradientDrawable);
+
+        textTv = view.findViewById(R.id.chapterName);
+        textTv.setText(text);
+
+        ImageView icon = view.findViewById(R.id.iv_icon);
+        if(resId != 0){
+            icon.setImageResource(resId);
+        }
+        mDuration = duration;
+        return this;
+    }
+
+
+
+
     public void show() {
+        toast.setView(view);
         toast.setDuration(mDuration);
         toast.show();
     }
-    
+
     /**
      * 生成View
      *
@@ -228,20 +301,13 @@ public class ToastUtil {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setGravity(Gravity.CENTER);
-//        linearLayout.setBackgroundColor(Color.parseColor("#21201F"));
-
-        GradientDrawable gradientDrawable = new GradientDrawable();
-
-        gradientDrawable.setColor(Color.parseColor("#a7333333"));
-
-        gradientDrawable.setCornerRadius(UIUtils.dp2px(8));
 
         linearLayout.setBackground(gradientDrawable);
 
         textTv = new TextView(context);
         textTv.setTextColor(Color.WHITE);
         textTv.setGravity(Gravity.CENTER);
-        textTv.setPadding(UIUtils.dp2px(15), UIUtils.dp2px(10), UIUtils.dp2px(15), UIUtils.dp2px(10));
+        textTv.setPadding(UIUtils.dp2px(16), UIUtils.dp2px(16), UIUtils.dp2px(16), UIUtils.dp2px(16));
         textTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, UIUtils.dp2px(16));
 
 
