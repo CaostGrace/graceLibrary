@@ -23,15 +23,21 @@ public class BaseModel implements IModel {
 
     public HttpManager mHttpManager;
 
+    public String basrUrl;
 
     @Override
     public void onAttach(IDelegate delegate) {
         mDelegate = delegate;
         mContext = (Context) delegate;
-        if(ApplicationLibrary.INSTANCE.getBaseUrl().equals("")){
-            throw new IllegalStateException("使用mvp模式，需要继承ApplicationLibrary重写getBaseUrl方法返回BaseUrl");
+        basrUrl =  ApplicationLibrary.INSTANCE.getBaseUrl();
+        if(basrUrl.equals("")){
+
+            basrUrl = getHttpBaseUrl();
+            if(basrUrl.equals("")){
+                throw new IllegalStateException("使用mvp模式，需要继承ApplicationLibrary重写getBaseUrl方法返回BaseUrl 或者重写BaseModel的getHttpBaseUrl方法");
+            }
         }
-        mHttpManager = HttpManager.getInstance(ApplicationLibrary.INSTANCE.getBaseUrl());
+        mHttpManager = HttpManager.getInstance(basrUrl);
     }
 
     @Override
@@ -39,4 +45,9 @@ public class BaseModel implements IModel {
         mDelegate = null;
         mContext = null;
     }
+
+    public String getHttpBaseUrl(){
+        return "";
+    }
+
 }
