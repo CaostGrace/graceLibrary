@@ -388,5 +388,5 @@ public class MainView extends BaseView {
 >  具体例子见app的中例子代码，框架提供的MVP模式，提供了HttpManager实例，可直接用此实例进行网络请求，重写的getHttpBaseUrl方法就是Http地址
 
 
-## 还有很多其他功能和小工具未写完，下次再行补上，请自行摸索！！！！！。
+## 还有很多其他功能和小工具的用法未写完，下次有空再行补上，其余用法请自行根据样例摸索！！！！！。
 
