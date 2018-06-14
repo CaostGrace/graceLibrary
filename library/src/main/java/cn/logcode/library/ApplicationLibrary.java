@@ -29,7 +29,7 @@ public class ApplicationLibrary extends Application {
         INSTANCE = this;
         //测试时为true，发布时为false
 //        CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", true);
-//        CrashReport.initCrashReport(getApplicationContext(), "4a3804c4fe", true);
+//        CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", true);
 
         if(!buglyAppId().equals("")){
 
