@@ -12,7 +12,7 @@ package cn.logcode.library.mvp;
  */
 public interface IView<T extends IDelegate> {
 
-    void onAttach(T t);
+    void onAttach(T t,boolean isFragment);
 
     void showLoadingView(String str);
     void showErrorView(String str);

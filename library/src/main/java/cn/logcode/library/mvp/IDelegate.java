@@ -1,5 +1,6 @@
 package cn.logcode.library.mvp;
 
+import android.content.Context;
 import android.view.View;
 
 /**
@@ -20,5 +21,6 @@ public interface IDelegate {
 
     Class<?> getModelClass();
 
+    Context getContext();
 
 }

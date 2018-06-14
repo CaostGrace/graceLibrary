@@ -3,11 +3,17 @@ package cn.logcode.frameworkdemo.test.mvpTest;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.tapadoo.alerter.Alert;
 import com.tapadoo.alerter.Alerter;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+import cn.logcode.frameworkdemo.R;
 import cn.logcode.library.Log.LogUtils;
 import cn.logcode.library.mvp.BaseView;
 import cn.logcode.library.utils.ToastUtil;
@@ -25,6 +31,10 @@ import cn.logcode.library.widget.dialog.DialogManager;
  */
 public class TestView extends BaseView {
     DialogManager manager;
+
+
+    @BindView(R.id.frame_layout)
+    public FrameLayout mFrameLayout;
 
     @Override
     public void showLoadingView(String str) {
@@ -68,4 +78,21 @@ public class TestView extends BaseView {
     public void initView() {
 
     }
+
+
+    @OnClick({R.id.test01,R.id.test02})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.test01:
+                showLoadingView("加载中...");
+                break;
+            case R.id.test02:
+                TestFragment fragment = new TestFragment();
+                mFragmentManager.beginTransaction().add(R.id.frame_layout,fragment)
+                        .commit();
+                break;
+                
+        }
+    }
+
 }

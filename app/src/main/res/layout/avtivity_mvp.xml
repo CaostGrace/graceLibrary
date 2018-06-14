@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".MainActivity">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/test01"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:gravity="center"
         android:text="测试按钮一"
         android:textColor="@color/black"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:textSize="18dp"/>
 
     <TextView
         android:id="@+id/test02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:gravity="center"
+        android:minHeight="50dp"
         android:text="测试按钮二"
         android:textColor="@color/black"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:clickable="true"
+        android:textSize="18dp"/>
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
+        android:id="@+id/frame_layout"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 </LinearLayout>

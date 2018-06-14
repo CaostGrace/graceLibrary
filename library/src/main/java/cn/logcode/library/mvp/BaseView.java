@@ -1,9 +1,15 @@
 package cn.logcode.library.mvp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.SparseArray;
 import android.view.View;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.logcode.library.Log.LogUtils;
 
 /**
@@ -29,6 +35,13 @@ public abstract class BaseView implements IView {
 
     private SparseArray<View> mViews = new SparseArray<>();
 
+    protected Unbinder mUnbinder;
+
+    protected FragmentManager mFragmentManager;
+
+    public FragmentManager getFragmentManager() {
+        return mFragmentManager;
+    }
 
     public <T extends View> T bindView(int id) {
         T view = (T) mViews.get(id);
@@ -44,16 +57,28 @@ public abstract class BaseView implements IView {
     }
 
     @Override
-    public void onAttach(IDelegate delegate) {
+    public void onAttach(IDelegate delegate,boolean isFragment) {
         mDelegate = delegate;
         rootView = delegate.getRootView();
-        mContext = (Context) mDelegate;
+        mContext = delegate.getContext();
+
+        if(isFragment){
+            mFragmentManager = ((Fragment)delegate).getChildFragmentManager();
+        }else{
+            mFragmentManager = ((FragmentActivity)mContext).getSupportFragmentManager();
+        }
+        
+        mUnbinder = ButterKnife.bind(this,rootView);
         initView();
     }
 
 
+
+
+
     @Override
     public void deAttach() {
+        mUnbinder.unbind();
         mDelegate = null;
         mContext = null;
         mViews = null;

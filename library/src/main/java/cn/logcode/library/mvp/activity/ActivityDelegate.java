@@ -1,10 +1,16 @@
-package cn.logcode.library.mvp;
+package cn.logcode.library.mvp.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import cn.logcode.library.mvp.IDelegate;
+import cn.logcode.library.mvp.IModel;
+import cn.logcode.library.mvp.IView;
 import cn.logcode.library.utils.ActivityUtils;
 
 /**
@@ -17,23 +23,25 @@ import cn.logcode.library.utils.ActivityUtils;
  * @简书: http://www.jianshu.com/u/b252a19d88f3
  * @content:
  */
-public abstract class BaseDelegate<T extends IView,M extends IModel> extends AppCompatActivity implements IDelegate{
+public abstract class ActivityDelegate<V extends IView,M extends IModel> extends AppCompatActivity implements IDelegate {
 
-    protected T mView;
+    protected V mView;
     protected M mModel;
 
     protected View parent;
 
-    public T getViewDelegate(){
+    public V getViewDelegate(){
         return mView;
     }
+
+//    protected Unbinder mUnbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityUtils.addActivity(this);
         try {
-            mView = (T) getViewClass().newInstance();
+            mView = (V) getViewClass().newInstance();
             mModel = (M) getModelClass().newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -49,19 +57,17 @@ public abstract class BaseDelegate<T extends IView,M extends IModel> extends App
         return parent;
     }
 
+    @Override
+    public Context getContext() {
+        return this;
+    }
 
     @Override
     public void setContentView(int layoutResID) {
         parent = View.inflate(this,layoutResID,null);
         super.setContentView(parent);
-        mView.onAttach(this);
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
+        mView.onAttach(this,false);
+//        mUnbinder = ButterKnife.bind(this);
     }
 
     @Override
@@ -69,6 +75,11 @@ public abstract class BaseDelegate<T extends IView,M extends IModel> extends App
         super.onDestroy();
         mView.deAttach();
         mModel.deAttach();
+//        mUnbinder.unbind();
         ActivityUtils.removeActivity(this);
     }
+
+
+    
+
 }
