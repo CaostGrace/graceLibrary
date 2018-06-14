@@ -119,11 +119,14 @@ public class PopDialogFragment extends DialogFragment implements Idialog {
     //调整布局及设置内容
     private void buidDisplay(){
         cancel.setText(params.cancelText);
-        cancel.setOnClickListener((View v)->{
-            if(params.cancelListener != null){
-                params.cancelListener.onClick(v);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(params.cancelListener != null){
+                    params.cancelListener.onClick(v);
+                }
+                dismiss();
             }
-            dismiss();
         });
 
         switch (params.cancelMode){

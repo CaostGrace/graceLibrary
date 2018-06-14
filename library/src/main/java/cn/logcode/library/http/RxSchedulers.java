@@ -26,12 +26,28 @@ import io.reactivex.schedulers.Schedulers;
 public class RxSchedulers {
 
     public static <R> ObservableTransformer<BaseEntity<R>, R> compose() {
-        return (Observable<BaseEntity<R>> upstream) -> {
-            return upstream.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map((BaseEntity<R> t) -> t.data);
+        return new ObservableTransformer<BaseEntity<R>, R>() {
+            @Override
+            public ObservableSource<R> apply(Observable<BaseEntity<R>> upstream) {
+                return upstream.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<BaseEntity<R>, R>() {
+                            @Override
+                            public R apply(BaseEntity<R> entity) throws Exception {
+                                return entity.data;
+                            }
+                        });
+            }
         };
+
+//        return (Observable<BaseEntity<R>> upstream) -> {
+//            return upstream.subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .map((BaseEntity<R> t) -> t.data);
+//        };
     }
+
+
 
     public static <T> ObservableTransformer<T,T> defaultCompose(){
         return new ObservableTransformer<T, T>() {

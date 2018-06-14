@@ -115,8 +115,11 @@ public class LoadDialog extends Dialog {
 
     public void show(long time) {
         show();
-        handler.postDelayed(() -> {
-            cancel();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                cancel();
+            }
         }, time);
     }
 }

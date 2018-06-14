@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import cn.logcode.library.Log.LogUtils;
+import cn.logcode.library.mvp.IView;
+import cn.logcode.library.utils.Utils;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -17,24 +20,29 @@ import io.reactivex.disposables.Disposable;
  * @简书: http://www.jianshu.com/u/b252a19d88f3
  * @content:
  */
-public abstract class EntityObserver<T> implements Observer<BaseEntity<T>> {
+public abstract class EntityObserver<T> extends BaseObserver<BaseEntity<T>> {
 
     private static final String TAG = "EntityObserver";
-    private Context mContext;
 
-    protected EntityObserver(Context context) {
-        this.mContext = context.getApplicationContext();
+
+    public EntityObserver(IView iView){
+        super(iView);
     }
 
-    public EntityObserver(){}
-
-    @Override
-    public void onSubscribe(Disposable d) {
-
+    public EntityObserver(){
+        super();
     }
+
+
 
     @Override
     public void onNext(BaseEntity<T> value) {
+
+        if (mView != null){
+            mView.hideLoadingView();
+            LogUtils.d("取消加载框");
+        }
+
         if (value.code == 200) {
             T t = value.data;
             onHandleSuccess(t);
@@ -43,22 +51,10 @@ public abstract class EntityObserver<T> implements Observer<BaseEntity<T>> {
         }
     }
 
-    @Override
-    public void onError(Throwable e) {
-        Log.e(TAG, "error:" + e.toString());
-        onHandleError(e.getMessage());
-    }
-
-    @Override
-    public void onComplete() {
-        Log.d(TAG, "onComplete");
-    }
-
 
     protected abstract void onHandleSuccess(T t);
 
     protected void onHandleError(String msg) {
-//        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
     }
 }
 

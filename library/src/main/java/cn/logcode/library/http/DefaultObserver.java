@@ -16,29 +16,17 @@ import io.reactivex.disposables.Disposable;
  * @简书: http://www.jianshu.com/u/b252a19d88f3
  * @content:
  */
-public abstract class DefaultObserver<T> implements Observer<T> {
+public abstract class DefaultObserver<T> extends BaseObserver<T> {
 
     public static final String TAG = DefaultObserver.class.getSimpleName();
 
-    private IView mView;
 
-    public DefaultObserver(){}
-
-    public DefaultObserver(IView iView){
-        this.mView = iView;
+    public DefaultObserver(){
+        super();
     }
 
-    @Override
-    public void onSubscribe(Disposable d) {
-        if(!Utils.isNetworkConnected()) {
-            LogUtils.d("无网络连接");
-            mView.showErrorMsg("无网络连接");
-            return;
-        }
-        if(mView != null){
-            mView.showLoadingView("加载中");
-            LogUtils.d("加载框");
-        }
+    public DefaultObserver(IView iView){
+        super(iView);
     }
 
     @Override
@@ -50,24 +38,5 @@ public abstract class DefaultObserver<T> implements Observer<T> {
         onHandleSuccess(t);
     }
 
-    @Override
-    public void onError(Throwable e) {
-        if(mView != null){
-            mView.hideLoadingView();
-            mView.showErrorView(e.getMessage());
-            LogUtils.d("错误信息");
-            LogUtils.d(e.getMessage());
-        }
-        onHandleError(e.getMessage());
-    }
-
-    @Override
-    public void onComplete() {
-
-    }
-
     public abstract void onHandleSuccess(T t);
-
-    protected void onHandleError(String msg) {
-    }
 }

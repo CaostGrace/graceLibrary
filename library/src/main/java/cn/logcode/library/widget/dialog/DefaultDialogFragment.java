@@ -157,38 +157,50 @@ public class DefaultDialogFragment extends DialogFragment implements Idialog {
             neutral.setVisibility(View.GONE);
         } else if (params.isVisibilityNeutralButton) {
             neutral.setText(params.neutralText);
-            neutral.setOnClickListener((View v) -> {
-                if (params.neutralListener != null) {
-                    params.neutralListener.onClick(v);
+            neutral.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (params.neutralListener != null) {
+                        params.neutralListener.onClick(v);
+                    }
+                    dismiss();
                 }
-                dismiss();
             });
 
             negative.setText(params.negativeText);
-            negative.setOnClickListener((View v) -> {
-                if (params.negativeListener != null) {
-                    params.negativeListener.onClick(v);
+            negative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (params.negativeListener != null) {
+                        params.negativeListener.onClick(v);
+                    }
+                    dismiss();
                 }
-                dismiss();
             });
         } else {
             neutral.setVisibility(View.GONE);
             vertical_divider02.setVisibility(View.GONE);
 
             negative.setText(params.negativeText);
-            negative.setOnClickListener((View v) -> {
-                if (params.negativeListener != null) {
-                    params.negativeListener.onClick(v);
+            negative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (params.negativeListener != null) {
+                        params.negativeListener.onClick(v);
+                    }
+                    dismiss();
                 }
-                dismiss();
             });
         }
         positive.setText(params.positiveText);
-        positive.setOnClickListener((View v) -> {
-            if (params.positiveListener != null) {
-                params.positiveListener.onClick(v);
+        positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (params.positiveListener != null) {
+                    params.positiveListener.onClick(v);
+                }
+                dismiss();
             }
-            dismiss();
         });
         setHighMode();
     }

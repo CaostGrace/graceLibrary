@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import cn.logcode.frameworkdemo.R;
 import cn.logcode.library.Log.LogUtils;
+import cn.logcode.library.http.DefaultObserver;
 import cn.logcode.library.http.HttpManager;
 import cn.logcode.library.http.RxSchedulers;
 import io.reactivex.Observer;
@@ -45,29 +46,28 @@ public class TestActivity extends AppCompatActivity {
         httpManger
                 .createApi(TestApi.class)
                 .defaultTest("1cc454f2535844bd9b085ea71428f3f6","成都天气")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Bean>() {
+                .compose(RxSchedulers.<Bean>defaultCompose())
+                .subscribe(new DefaultObserver<Bean>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        LogUtils.d("onSubscribe");
-                    }
+                    public void onHandleSuccess(Bean bean) {
 
-                    @Override
-                    public void onNext(Bean bean) {
-                        LogUtils.d(bean.toString());
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtils.d("onError");
-                        LogUtils.d(e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        LogUtils.d("onComplete");
                     }
                 });
+
+        httpManger
+                .createApi(TestApi.class)
+                .defaultTest("1cc454f2535844bd9b085ea71428f3f6","成都天气")
+                .compose(RxSchedulers.<Bean>defaultCompose())
+                .subscribeWith(new DefaultObserver<Bean>() {
+                    @Override
+                    public void onHandleSuccess(Bean bean) {
+
+                    }
+
+                });
+
+
+
 
     }
 }

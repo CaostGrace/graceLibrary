@@ -123,7 +123,7 @@ public class CustomDialog implements Idialog {
             frameParams.bottomMargin = UIUtils.dp2px(10);
             layoutParams.windowAnimations = R.style.dialogAnimations;
         }
-        if(params.animStyle != 0){
+        if (params.animStyle != 0) {
             layoutParams.windowAnimations = params.animStyle;
         }
         layoutParams.gravity = params.gravity;
@@ -147,42 +147,50 @@ public class CustomDialog implements Idialog {
             neutral.setVisibility(View.GONE);
         } else if (params.isVisibilityNeutralButton) {
             neutral.setText(params.neutralText);
-            neutral.setOnClickListener((View v) -> {
-                if (params.neutralListener != null) {
-                    params.neutralListener.onClick(v);
+            neutral.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (params.neutralListener != null) {
+                        params.neutralListener.onClick(v);
+                    }
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
-//                defaultDialogFragment.dismiss();
             });
 
             negative.setText(params.negativeText);
-            negative.setOnClickListener((View v) -> {
-                if (params.negativeListener != null) {
-                    params.negativeListener.onClick(v);
+            negative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (params.negativeListener != null) {
+                        params.negativeListener.onClick(v);
+                    }
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
-//                defaultDialogFragment.dismiss();
             });
         } else {
             neutral.setVisibility(View.GONE);
             vertical_divider02.setVisibility(View.GONE);
 
             negative.setText(params.negativeText);
-            negative.setOnClickListener((View v) -> {
-                if (params.negativeListener != null) {
-                    params.negativeListener.onClick(v);
+            negative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (params.negativeListener != null) {
+                        params.negativeListener.onClick(v);
+                    }
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
-//                defaultDialogFragment.dismiss();
             });
         }
         positive.setText(params.positiveText);
-        positive.setOnClickListener((View v) -> {
-            if (params.positiveListener != null) {
-                params.positiveListener.onClick(v);
+        positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (params.positiveListener != null) {
+                    params.positiveListener.onClick(v);
+                }
+                dialog.dismiss();
             }
-            dialog.dismiss();
-//            defaultDialogFragment.dismiss();
         });
         setHighMode();
     }

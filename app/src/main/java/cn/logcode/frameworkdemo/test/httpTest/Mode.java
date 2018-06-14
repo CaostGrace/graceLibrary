@@ -18,31 +18,29 @@ import io.reactivex.disposables.Disposable;
  */
 public class Mode {
     String str = "";
-    public void getData(String key, String info, HttpManager manager,CallBack callBack){
+    public void getData(String key, String info, HttpManager manager, final CallBack callBack){
 
         manager.createApi(TestApi.class)
                 .defaultTest(key,info)
                 .compose(RxSchedulers.defaultCompose())
-                .subscribe(new Observer<Bean>() {
+                .subscribe(new Observer<Object>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Bean bean) {
-                        str =  bean.toString();
-                        callBack.getData(str);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        str = e.getMessage();
-                        LogUtils.d(e.getMessage());
+                    public void onNext(Object o) {
+                        callBack.getData(o.toString());
                     }
 
                     @Override
                     public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
 
                     }
                 });

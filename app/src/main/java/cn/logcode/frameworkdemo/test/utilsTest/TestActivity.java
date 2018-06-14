@@ -52,8 +52,11 @@ public class TestActivity extends AppCompatActivity {
                 .setMessage("这是内容")
                 .setWindowAnimations(R.style.dialogAnimations)
                 .setTitle("四六级", DialogManager.HighMode.HIGH)
-                .setPositiveButton("确定",(View v)->{
-                    ToastUtil.init(this).makeText("点击了确定",Toast.LENGTH_LONG).show();
+                .setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtil.init(TestActivity.this).makeText("点击了确定",Toast.LENGTH_LONG).show();
+                    }
                 }, DialogManager.HighMode.HIGH)
                 .build();
         dialogManger.show();
@@ -66,13 +69,19 @@ public class TestActivity extends AppCompatActivity {
                 .createPoP()
                 .addItem("大声说", DialogManager.HighMode.NEUTRAL)
                 .addItem("颠三倒四")
-                .addItem("大大",(View v)->{
-                    LogUtils.d(Utils.isWIFIConnected(this));
+                .addItem("大大", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LogUtils.d(Utils.isWIFIConnected(TestActivity.this));
+                    }
                 })
                 .setCancelText("确定")
                 .setCancelHighMode(DialogManager.HighMode.HIGH)
-                .setCancelListener((View v)->{
-                    Toast.makeText(TestActivity.this,"点击了确定",Toast.LENGTH_SHORT).show();
+                .setCancelListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtil.init(TestActivity.this).makeText("点击了确定",Toast.LENGTH_LONG).show();
+                    }
                 })
                 .build();
         dialogManger.show();

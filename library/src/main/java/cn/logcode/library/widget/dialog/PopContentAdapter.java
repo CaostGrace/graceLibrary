@@ -84,12 +84,15 @@ public class PopContentAdapter extends BaseAdapter {
         }
     }
     //
-    private void performListener(View.OnClickListener listener,TextView textView){
-        textView.setOnClickListener((View v)->{
-            if(listener != null){
-                listener.onClick(v);
+    private void performListener(final View.OnClickListener listener, TextView textView){
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onClick(v);
+                }
+                dialog.dismiss();
             }
-            dialog.dismiss();
         });
     }
 

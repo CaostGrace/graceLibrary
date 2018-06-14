@@ -13,4 +13,5 @@ import cn.logcode.library.mvp.BaseModel;
  * @content:
  */
 public class TestModel extends BaseModel {
+
 }

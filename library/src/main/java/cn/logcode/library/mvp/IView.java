@@ -15,9 +15,10 @@ public interface IView<T extends IDelegate> {
     void onAttach(T t,boolean isFragment);
 
     void showLoadingView(String str);
-    void showErrorView(String str);
     void hideLoadingView();
+    void showErrorView(String str);
     void hideErrorView();
+
     void showErrorMsg(String str);
 
     void deAttach();

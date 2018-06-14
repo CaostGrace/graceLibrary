@@ -18,6 +18,7 @@ import cn.logcode.library.Log.LogUtils;
 import cn.logcode.library.mvp.BaseView;
 import cn.logcode.library.utils.ToastUtil;
 import cn.logcode.library.widget.dialog.DialogManager;
+import cn.logcode.library.widget.loading.LoadDialog;
 
 /**
  * Created by CaostGrace on 2018/6/6 21:57
@@ -32,6 +33,7 @@ import cn.logcode.library.widget.dialog.DialogManager;
 public class TestView extends BaseView {
     DialogManager manager;
 
+    LoadDialog mDialog;
 
     @BindView(R.id.frame_layout)
     public FrameLayout mFrameLayout;
@@ -39,14 +41,9 @@ public class TestView extends BaseView {
     @Override
     public void showLoadingView(String str) {
         LogUtils.d(mContext.getCacheDir().getAbsolutePath());
-        manager = new DialogManager
-                .Builder()
-                .setFragmentManager(((FragmentActivity)mContext).getSupportFragmentManager())
-                .create()
-                .setTitle("注意，这是一个加载框", DialogManager.HighMode.HIGH)
-                .setMessage(str)
-                .build();
-        manager.show();
+        mDialog = LoadDialog.create(mContext)
+                .setTitleText("加载中...");
+        mDialog.show();
     }
 
     @Override
@@ -60,7 +57,9 @@ public class TestView extends BaseView {
 
     @Override
     public void hideLoadingView() {
-        manager.getDialog().dismiss();
+        if (mDialog != null){
+            mDialog.cancel();
+        }
     }
 
     @Override
@@ -70,8 +69,14 @@ public class TestView extends BaseView {
 
     @Override
     public void showErrorMsg(String str) {
-        ToastUtil.init(mContext)
-                .makeText(str, Toast.LENGTH_SHORT).show();
+        manager = new DialogManager
+                .Builder()
+                .setFragmentManager(mFragmentManager)
+                .create()
+                .setTitle("注意，这是一个错误信息", DialogManager.HighMode.HIGH)
+                .setMessage(str)
+                .build();
+        manager.show();
     }
 
     @Override
@@ -84,7 +89,7 @@ public class TestView extends BaseView {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.test01:
-                showLoadingView("加载中...");
+                showErrorMsg("加载中...");
                 break;
             case R.id.test02:
                 TestFragment fragment = new TestFragment();
