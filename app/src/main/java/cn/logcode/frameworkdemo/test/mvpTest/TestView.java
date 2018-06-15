@@ -84,20 +84,15 @@ public class TestView extends BaseView {
 
     }
 
-
-    @OnClick({R.id.test01,R.id.test02})
-    public void onClick(View view){
-        switch (view.getId()){
-            case R.id.test01:
-                showErrorMsg("加载中...");
-                break;
-            case R.id.test02:
-                TestFragment fragment = new TestFragment();
-                mFragmentManager.beginTransaction().add(R.id.frame_layout,fragment)
-                        .commit();
-                break;
-                
-        }
+    @Override
+    public void onCreate() {
+        get(R.id.test01).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.init(mContext)
+                        .makeSuccessToast("拦截成功",Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
-
 }

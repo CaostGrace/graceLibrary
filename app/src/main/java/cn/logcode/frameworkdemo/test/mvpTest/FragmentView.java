@@ -19,21 +19,11 @@ import cn.logcode.library.utils.ToastUtil;
  * @content:
  */
 public class FragmentView extends BaseView {
+
     @Override
-    public void initView() {
+    public void onCreate() {
 
     }
-
-    @OnClick({R.id.test01})
-    public void onClick(View view){
-        switch (view.getId()){
-            case R.id.test01:
-                ToastUtil.init(mContext).makeSuccessToast("成功", Toast.LENGTH_SHORT).show();
-                break;
-
-        }
-    }
-
 
     @Override
     public void showLoadingView(String str) {

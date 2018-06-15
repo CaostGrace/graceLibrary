@@ -96,10 +96,9 @@ public abstract class FragmentDelegate<V extends IView,M extends IModel> extends
         super.onStart();
         mUnbinder = ButterKnife.bind(this,parent);
         mView.onCreate();
-        doSomething();
+
     }
 
-    public void doSomething(){}
 
     @Override
     public void onResume() {

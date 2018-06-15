@@ -39,7 +39,7 @@ public class TestActivity extends ActivityDelegate<TestView, TestModel> {
 
         mModel.addDisposable(TestModel.mHttpManager
                 .createApi(TestApi.class)
-                .defaultTest("1cc454f2535844bd9b085ea71428f3f6", "成都天气")
+                .defaultTest("", "成都天气")
                 .compose(RxSchedulers.<Bean>defaultCompose())
                 .subscribeWith(new DefaultObserver<Bean>(mView) {
                     @Override
@@ -51,6 +51,23 @@ public class TestActivity extends ActivityDelegate<TestView, TestModel> {
         );
 
 
+    }
+
+
+
+    @OnClick({R.id.test01,R.id.test02})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.test01:
+                mView.showErrorMsg("加载中...");
+                break;
+            case R.id.test02:
+                TestFragment fragment = new TestFragment();
+                mView.getFragmentManager().beginTransaction().add(R.id.frame_layout,fragment)
+                        .commit();
+                break;
+
+        }
     }
 
 
